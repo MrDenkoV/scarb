@@ -1,14 +1,16 @@
 use anyhow::Result;
 use cairo_lang_compiler::db::RootDatabase;
-use cairo_lang_compiler::project::{ProjectConfig, ProjectConfigContent};
+use cairo_lang_compiler::project::{
+    CrateSourcePath, DetailedSourcePath, ProjectConfig, ProjectConfigContent,
+};
 use cairo_lang_defs::db::DefsGroup;
 use cairo_lang_defs::plugin::MacroPlugin;
 use cairo_lang_filesystem::ids::Directory;
-use std::path::PathBuf;
 use tracing::trace;
 
 use crate::compiler::CompilationUnit;
 use crate::core::Workspace;
+use crate::DEFAULT_SOURCE_PATH;
 
 // TODO(mkaput): ScarbDatabase?
 pub(crate) fn build_scarb_root_database(
@@ -40,8 +42,19 @@ fn build_project_config(unit: &CompilationUnit) -> Result<ProjectConfig> {
         .iter()
         .filter(|component| !component.package.id.is_core())
         .map(|component| {
-            let path: PathBuf = component.target.source_root().into();
-            (component.cairo_package_name(), path.into())
+            let crate_root: CrateSourcePath = if component
+                .target
+                .source_path
+                .clone()
+                .ends_with(DEFAULT_SOURCE_PATH)
+            {
+                CrateSourcePath::SimpleSourceRoot(component.target.source_root().into())
+            } else {
+                CrateSourcePath::SourcePath(DetailedSourcePath {
+                    source_path: component.target.source_path.clone().into(),
+                })
+            };
+            (component.cairo_package_name(), crate_root)
         })
         .collect();
 
