@@ -92,8 +92,6 @@ fn create_local_dependencies_setup(t: &assert_fs::TempDir) {
             name = "x"
             version = "1.0.0"
 
-            [[test]]
-
             [dependencies]
             y = { path = "y" }
             "#,
@@ -110,8 +108,6 @@ fn create_local_dependencies_setup(t: &assert_fs::TempDir) {
             [package]
             name = "y"
             version = "1.0.0"
-
-            [[test]]
 
             [dependencies]
             q = { path = "../q" }
@@ -131,8 +127,6 @@ fn create_local_dependencies_setup(t: &assert_fs::TempDir) {
             name = "z"
             version = "1.0.0"
 
-            [[test]]
-
             [dependencies]
             q = { path = "../q" }
             "#,
@@ -149,8 +143,6 @@ fn create_local_dependencies_setup(t: &assert_fs::TempDir) {
             [package]
             name = "q"
             version = "1.0.0"
-
-            [[test]]
             "#,
         )
         .unwrap();
@@ -476,13 +468,22 @@ fn workspace_with_root() {
                     "core".to_string(),
                     "first".to_string(),
                     "second".to_string(),
+                    "test_plugin".to_string()
                 ]
             ),
-            ("first".to_string(), vec!["core".to_string()]),
+            (
+                "first".to_string(),
+                vec!["core".to_string(), "test_plugin".to_string()]
+            ),
             (
                 "second".to_string(),
-                vec!["core".to_string(), "first".to_string(),]
+                vec![
+                    "core".to_string(),
+                    "first".to_string(),
+                    "test_plugin".to_string(),
+                ]
             ),
+            ("test_plugin".to_string(), vec![]),
         ])
     )
 }

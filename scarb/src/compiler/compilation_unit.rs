@@ -82,7 +82,14 @@ impl CompilationUnit {
     }
 
     pub fn is_sole_for_package(&self) -> bool {
-        self.main_component().package.manifest.targets.len() >= 2
+        self.main_component()
+            .package
+            .manifest
+            .targets
+            .iter()
+            .filter(|t| !t.is_test())
+            .count()
+            >= 2
     }
 
     pub fn has_custom_name(&self) -> bool {
