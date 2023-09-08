@@ -115,9 +115,7 @@ fn env_scarb_log_is_passed_verbatim() {
         .success();
 }
 
-// TODO(#129): Fix this test.
 #[test]
-#[ignore] // something doesn't work here
 fn ctrl_c_kills_everyone() {
     let t = assert_fs::TempDir::new().unwrap();
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
