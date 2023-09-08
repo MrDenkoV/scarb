@@ -219,7 +219,7 @@ fn manifest_targets_and_metadata() {
 
             license = "MIT License"
             license-file = "./license.md"
-            readme = "./readme.md"
+            readme = "./README.md"
 
             [package.urls]
             hello = "https://world.com/"
@@ -801,7 +801,7 @@ fn infer_readme_workspace() {
     Scarb::quick_snapbox()
         .arg("new")
         .arg("t7")
-        .current_dir(&t.child("tmp1").child("tmp2"));
+        .current_dir(t.child("tmp1").child("tmp2"));
     t.child("tmp1")
         .child("tmp2")
         .child("t7")
