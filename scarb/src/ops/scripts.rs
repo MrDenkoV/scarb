@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::env;
 use std::ffi::OsString;
 use std::rc::Rc;
 
@@ -33,6 +34,7 @@ pub fn execute_script(
                 v.to_string_lossy().to_string(),
             )
         }))
+        .chain(env::vars())
         .collect();
     let custom_commands = HashMap::from([
         // Used to ensure deno_task_shell scripts use the current scarb executable.

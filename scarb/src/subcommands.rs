@@ -9,6 +9,10 @@ pub const SCARB_MANIFEST_PATH_ENV: &str = "SCARB_MANIFEST_PATH";
 /// Defines env vars passed to external subcommands.
 pub fn get_env_vars(config: &Config) -> anyhow::Result<HashMap<OsString, OsString>> {
     Ok(HashMap::from_iter([
+        (
+            "CLICOLOR".into(),
+            console::colors_enabled().to_string().into(),
+        ),
         ("PATH".into(), config.dirs().path_env()),
         (
             "SCARB_CACHE".into(),
