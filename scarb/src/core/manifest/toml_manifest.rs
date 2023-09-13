@@ -749,17 +749,17 @@ pub fn readme_for_package(
     package_root: &Utf8Path,
     readme: Option<&PathOrBool>,
 ) -> Result<Option<Utf8PathBuf>> {
-    match readme {
-        None => abs_canonical_path(
-            package_root,
-            default_readme_from_package_root(package_root.parent().unwrap()),
-        ),
-        Some(value) => match value {
-            PathOrBool::Bool(false) => Ok(None),
-            PathOrBool::Bool(true) => abs_canonical_path(package_root, Some("README.md".into())),
-            PathOrBool::Path(p) => abs_canonical_path(package_root, Some(p)),
-        },
-    }
+    let file_name = match readme {
+        None => default_readme_from_package_root(package_root.parent().unwrap()),
+        Some(PathOrBool::Path(p)) => Some(p.as_path()),
+        Some(PathOrBool::Bool(true)) => {
+            default_readme_from_package_root(package_root.parent().unwrap())
+                .or_else(|| Some("README.md".into()))
+        }
+        Some(PathOrBool::Bool(false)) => None,
+    };
+
+    abs_canonical_path(package_root, file_name)
 }
 
 /// Creates the absolute canonical path of the README file and checks if it exists
@@ -781,12 +781,12 @@ fn abs_canonical_path(prefix: &Utf8Path, readme: Option<&Utf8Path>) -> Result<Op
     }
 }
 
-const DEFAULT_README_FILES: [&str; 3] = ["README.md", "README.txt", "README"];
+const DEFAULT_README_FILES: &[&str] = &["README.md", "README.txt", "README"];
 
 /// Checks if a file with any of the default README file names exists in the package root.
 /// If so, returns a `Utf8Path` with that name.
 fn default_readme_from_package_root(package_root: &Utf8Path) -> Option<&Utf8Path> {
-    for &readme_filename in DEFAULT_README_FILES.iter() {
+    for &readme_filename in DEFAULT_README_FILES {
         if package_root.join(readme_filename).is_file() {
             return Some(readme_filename.into());
         }
