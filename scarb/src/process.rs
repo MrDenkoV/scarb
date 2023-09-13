@@ -12,7 +12,6 @@ use scarb_ui::components::{Spinner, Status};
 
 use crate::core::Config;
 
-// TODO(#125): Do what is documented here, take a look at what cargo-util does.
 /// Replaces the current process with the target process.
 ///
 /// On Unix, this executes the process using the Unix syscall `execvp`, which will block this
@@ -60,7 +59,7 @@ mod imp {
     pub fn exec_replace(cmd: &Command) -> Result<()> {
         unsafe {
             if SetConsoleCtrlHandler(Some(ctrlc_handler), TRUE) == FALSE {
-                return Err(ProcessError::new("Could not set Ctrl-C handler.", None, None).into());
+                panic!("Could not set Ctrl-C handler.");
             }
         }
 
