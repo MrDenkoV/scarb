@@ -46,7 +46,7 @@ mod imp {
 
 #[cfg(windows)]
 mod imp {
-    use anyhow::Result;
+    use anyhow::{bail, Context, Result};
     use std::process::Command;
     use windows_sys::Win32::Foundation::{BOOL, FALSE, TRUE};
     use windows_sys::Win32::System::Console::SetConsoleCtrlHandler;
@@ -56,7 +56,7 @@ mod imp {
         TRUE
     }
 
-    pub fn exec_replace(cmd: &Command) -> Result<()> {
+    pub fn exec_replace(cmd: &mut Command) -> Result<()> {
         unsafe {
             if SetConsoleCtrlHandler(Some(ctrlc_handler), TRUE) == FALSE {
                 panic!("Could not set Ctrl-C handler.");

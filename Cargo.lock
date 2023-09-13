@@ -3917,6 +3917,7 @@ dependencies = [
  "url",
  "walkdir",
  "which",
+ "windows-sys 0.48.0",
  "xxhash-rust",
  "zip",
 ]
