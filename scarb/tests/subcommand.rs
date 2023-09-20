@@ -125,6 +125,7 @@ fn ctrl_c_kills_everyone() {
         addr.to_string()
     };
 
+    panic!("{:?}", cargo_bin("scarb-test-support"));
     let mut child = Command::new(cargo_bin("scarb-test-support"))
         .arg("hang-on-tcp")
         .arg("--address")
