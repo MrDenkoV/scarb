@@ -2,6 +2,7 @@ use std::io::Read;
 use std::net::TcpListener;
 use std::process::{Child, Command};
 use std::{env, io};
+use std::path::Path;
 
 use assert_fs::TempDir;
 #[cfg(unix)]
@@ -125,7 +126,7 @@ fn ctrl_c_kills_everyone() {
         addr.to_string()
     };
 
-    panic!("{:?}", Command::new("cmd").arg("/C").arg("dir && cd").current_dir("D:\\a\\scarb\\scarb\\target\\ci".into()).output());
+    panic!("{:?}", Command::new("cmd").arg("/C").arg("dir && cd").current_dir::<Path>("D:\\a\\scarb\\scarb\\target\\ci".into()).output());
     panic!("{:?}", cargo_bin("scarb-test-support"));
     let mut child = Command::new(cargo_bin("scarb-test-support"))
         .arg("hang-on-tcp")
