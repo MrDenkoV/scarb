@@ -141,8 +141,8 @@ fn ctrl_c_kills_everyone() {
     ctrl_c(&mut child);
 
     assert!(!child.wait().unwrap().success());
-    let mut a = String::new();
-    panic!("{:?} {}", sock.read_to_string(&mut a), a);
+    // let mut a = String::new();
+    // panic!("{:?} {}", sock.read_to_string(&mut a), a);
     match sock.read(&mut [0; 10]) {
         Ok(n) => assert_eq!(n, 0),
         Err(e) => assert_eq!(e.kind(), io::ErrorKind::ConnectionReset),
