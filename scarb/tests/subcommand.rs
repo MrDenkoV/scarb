@@ -128,7 +128,7 @@ fn ctrl_c_kills_everyone() {
 
     let a = std::path::PathBuf::from("D:\\a\\scarb\\scarb\\target\\ci");
 
-    // panic!("{:?}", Command::new("cmd").arg("/C").arg("dir && cd").current_dir(a).output());
+    panic!("{:?}", Command::new("cmd").arg("/C").arg("dir && cd").current_dir(a).output());
     // panic!("{:?}", cargo_bin("scarb-test-support"));
     let mut child = Command::new(cargo_bin("scarb-test-support"))
         .arg("hang-on-tcp")
