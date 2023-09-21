@@ -45,7 +45,6 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo build --bin scarb-test-support
       - run: cargo test --profile=ci ctrl_c_kills_everyone
 #  build-test:
 #    runs-on: ubuntu-latest
